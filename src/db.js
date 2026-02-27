@@ -14,7 +14,8 @@ const pool = mysql.createPool({
   ssl: {
     // This enforces SSL and rejects invalid certificates
     rejectUnauthorized: true,
-     ca: fs.readFileSync("ca.pem"), // path to the downloaded CA cert
+     ca: process.env.DB_CA_CERT,
+   //  ca: fs.readFileSync("ca.pem"), // path to the downloaded CA cert
   },
 });
 
