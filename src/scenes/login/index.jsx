@@ -111,7 +111,7 @@ const handleLogin = async () => {
               sx={{ lineHeight: 4 }} // Adjust text height, move it further up
               
         >
-               Fleet Management {isRegister ? "Register" : "Login"}
+              Songa Fleet Management {isRegister ? "Register" : "Login"}
         </Typography>
 
 
