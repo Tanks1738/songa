@@ -9,13 +9,13 @@ const pool = mysql.createPool({
   host: "mysql.railway.internal",
   user: "root",
   password: variable,
-  database: "fleet_management",
+  database: "railway",
   port: 3306,
-  ssl: {
+   /*ssl: {
     // This enforces SSL and rejects invalid certificates
-    rejectUnauthorized: true,
+   rejectUnauthorized: true,
      ca: fs.readFileSync("ca.pem"), // path to the downloaded CA cert
-  },
+  },*/
 });
 
 module.exports = pool;
