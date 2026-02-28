@@ -10,7 +10,7 @@ const pool = mysql.createPool({
   user: "root",
   password: variable,
   database: "fleet_management",
-  port: 15433,
+  port: 3306,
   ssl: {
     // This enforces SSL and rejects invalid certificates
     rejectUnauthorized: true,
