@@ -6,8 +6,8 @@ const variable = process.env.DB_PASSWORD;
 
 
 const pool = mysql.createPool({
-  host: "mysql-2668dfd7-songa.j.aivencloud.com",
-  user: "avnadmin",
+  host: "mysql.railway.internal",
+  user: "root",
   password: variable,
   database: "fleet_management",
   port: 15433,

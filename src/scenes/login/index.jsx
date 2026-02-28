@@ -41,6 +41,8 @@ const LoginPage = () => {
 
   // ✅ Login handler
   const handleLogin = async () => {
+    console.log("DB rows:", rows);
+console.log("JWT_SECRET:", process.env.JWT_SECRET ? "Loaded" : "Missing");
   const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
   try {
       const res = await axios.post(`${API_URL}/login`, { username, password });
