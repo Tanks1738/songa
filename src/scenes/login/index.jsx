@@ -40,11 +40,12 @@ const LoginPage = () => {
 
 
   // ✅ Login handler
-const handleLogin = async () => {
+  const handleLogin = async () => {
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
   try {
-    const res = await axios.post("http://localhost:3001/login", { username, password });
-    console.log("Login response:", res.data);
-    const { token } = res.data;
+      const res = await axios.post(`${API_URL}/login`, { username, password });
+      console.log("Login response:", res.data);
+      const { token } = res.data;
 
     if (!token) {
       alert("Login failed: no token received");
@@ -78,8 +79,11 @@ const handleLogin = async () => {
 
   // ✅ Register handler
   const handleRegister = async () => {
+      const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
+
     try {
-      await axios.post("http://localhost:3001/register", {
+      await axios.post(`${API_URL}/register`, 
+        {
         username,
         password,
         role,

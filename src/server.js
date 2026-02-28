@@ -55,4 +55,6 @@ app.post("/login", async (req, res) => {
 });
 
 // ✅ Start server once
-app.listen(3001, () => console.log("Server running on port 3001"));
+//app.listen(3001, () => console.log("Server running on port 3001"));
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

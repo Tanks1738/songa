@@ -45,16 +45,19 @@ const Dashboard = () => {
 */
 
   // State for backend data
-  const [dbData, setDbData] = useState([]);
-    const fetchData = async () => {
-      try {    
-        const res = await axios.get("http://localhost:3001/dashboard-data");
-        setDbData(res.data);
-        console.log("Fetched DB data:", res.data);
-      } catch (err) {
-        console.error("Failed to fetch dashboard data:", err);
-      }
-    };
+  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
+
+const [dbData, setDbData] = useState([]);
+
+const fetchData = async () => {
+  try {
+    const res = await axios.get(`${API_URL}/dashboard-data`);
+    setDbData(res.data);
+    console.log("Fetched DB data:", res.data);
+  } catch (err) {
+    console.error("Failed to fetch dashboard data:", err);
+  }
+};
      useEffect(() => {
     fetchData();
   }, []);

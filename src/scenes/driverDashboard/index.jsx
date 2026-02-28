@@ -17,11 +17,14 @@ const DriverDashboard = ({ driverId }) => {
 
   // ✅ Fetch only this driver’s data
   useEffect(() => {
+    const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
+
     const fetchDriverData = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:3001/driver-dashboard/${driverId}`
-        );
+        
+    const res = await axios.get(`${API_URL}/driver-dashboard/${driverId}`);
+    setDriverData(res.data || []);
+
         setDriverData(res.data || []);
       } catch (err) {
         console.error("Failed to fetch driver data:", err);
