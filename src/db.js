@@ -12,13 +12,13 @@ const pool = mysql.createPool({
   database: process.env.DB_NAME,
   port: process.env.DB_PORT,
 
- /* ssl: {
+  ssl: {
     // This enforces SSL and rejects invalid certificates
     rejectUnauthorized: true,
      ca: process.env.DB_CA_CERT,
    //  ca: fs.readFileSync("ca.pem"), // path to the downloaded CA cert
   },
-  */
+  
 });
 
 module.exports = pool;
