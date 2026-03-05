@@ -1,0 +1,38 @@
+ # GitHub Actions workflow to build and deploy React app to Home.pl
+name: Deploy to Home.pl
+
+on:
+  push:
+    branches:
+      - main   # Trigger on pushes to main branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Install Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # Step 3: Install dependencies and build
+      - name: Install and build
+        run: |
+          npm install
+          npm run build
+
+  # Step 4: Deploy via FTP
+ name: Upload to Home.pl via FTP
+  uses: SamKirkland/FTP-Deploy-Action@v4.3.0
+  with:
+    server: ${{ secrets.FTP_SERVER }}       # Securely pulled from GitHub Secrets
+    username: ${{ secrets.FTP_USERNAME }}   # Securely pulled from GitHub Secrets
+    password: ${{ secrets.FTP_PASSWORD }}   # Securely pulled from GitHub Secrets
+    local-dir: build                        # Upload React build folder
+    server-dir: public_html                 # Target directory on Home.pl
