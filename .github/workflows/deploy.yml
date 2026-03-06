@@ -27,12 +27,12 @@ jobs:
           npm install
           npm run build
 
-  # Step 4: Deploy via FTP
- name: Upload to Home.pl via FTP
-  uses: SamKirkland/FTP-Deploy-Action@v4.3.0
-  with:
-    server: ${{ secrets.FTP_SERVER }}       # Securely pulled from GitHub Secrets
-    username: ${{ secrets.FTP_USERNAME }}   # Securely pulled from GitHub Secrets
-    password: ${{ secrets.FTP_PASSWORD }}   # Securely pulled from GitHub Secrets
-    local-dir: build                        # Upload React build folder
-    server-dir: public_html                 # Target directory on Home.pl
+     # Step 4: Deploy via FTP
+      - name: Upload to Home.pl via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}       # Securely stored in GitHub Secrets
+          username: ${{ secrets.FTP_USERNAME }}   # Securely stored in GitHub Secrets
+          password: ${{ secrets.FTP_PASSWORD }}   # Securely stored in GitHub Secrets
+          local-dir: build                        # Upload React build folder
+          server-dir: public_html                 # Target directory on Home.pl
