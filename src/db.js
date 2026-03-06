@@ -2,20 +2,20 @@ const mysql = require("mysql2/promise");
 const fs = require("fs"); // <-- you must import fs to use readFileSync
 require("dotenv").config();
 
-const variable = process.env.DB_PASSWORD;
+const password = process.env.DB_PASSWORD;
 
 
 const pool = mysql.createPool({
-  host: "mysql.railway.internal",
-  user: "root",
-  password: variable,
-  database: "railway",
-  port: 3306,
-   /*ssl: {
+  host: "mysql-2668dfd7-songa.j.aivencloud.com",
+  user: "avnadmin",
+  password: password,
+  database: "fleet_management",
+  port: 15433,
+  ssl: {
     // This enforces SSL and rejects invalid certificates
-   rejectUnauthorized: true,
+    rejectUnauthorized: true,
      ca: fs.readFileSync("ca.pem"), // path to the downloaded CA cert
-  },*/
+  },
 });
 
 module.exports = pool;
