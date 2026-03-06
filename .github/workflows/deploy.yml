@@ -4,6 +4,7 @@ name: Deploy to Home.pl
 on:
   push:
     branches:
+      - main  
       - clean-main   # Trigger on pushes to main branch
 
 jobs:
