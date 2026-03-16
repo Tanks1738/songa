@@ -1,16 +1,8 @@
 import { useState, useEffect } from "react";
-import {
-  Box,
-  Button,
-  TextField,
-  Typography,
-  Select,
-  MenuItem,
-  Alert,
-  Fade,
-} from "@mui/material";
+import {Box,Button,TextField,Typography,Select, MenuItem,Alert,Fade,} from "@mui/material";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const LoginPage = () => {
   // ✅ Form state
@@ -40,9 +32,10 @@ const LoginPage = () => {
 
 
   // ✅ Login handler
-const handleLogin = async () => {
+  const handleLogin = async () => {
+  const API_URL = process.env.REACT_APP_API_URL || "https://biasedly-abjective-brenden.ngrok-free.dev";
   try {
-    const res = await axios.post("http://localhost:3001/login", { username, password });
+    const res = await axios.post(`${API_URL}/login`, { username, password });
     console.log("Login response:", res.data);
     const { token } = res.data;
 
@@ -51,22 +44,36 @@ const handleLogin = async () => {
       return;
     }
 
+    // Save token
     localStorage.setItem("token", token);
 
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    console.log("Decoded JWT payload:", payload);
+      // Decode role and username from JWT
+      const decoded = jwtDecode(token);
+      localStorage.setItem("role", decoded.role);
+      localStorage.setItem("username", decoded.username || username);
 
-     // 👇 Always go to login page first
-    navigate("/", { replace: true });
+    // Decode JWT decoded to extract role
+   /* const decoded = JSON.parse(atob(token.split(".")[1]));
+    console.log("Decoded JWT decoded:", decoded);
+    */
 
-     // 👇 Then, if you want, you can conditionally redirect later
-    if (payload.role === "admin") {
-      console.log("User is admin, dashboard available at /admin,Navigating to /admin");
+    // Save role in localStorage
+    if (decoded.role) {
+      localStorage.setItem("role", decoded.role);
+      localStorage.setItem("username", decoded.username || username);
+    }
+
+    // Redirect based on role
+    if (decoded.role === "admin") {
+      console.log("User is admin, navigating to /admin");
       navigate("/admin");
-    } else if (payload.role === "driver") {
+    } else if (decoded.role === "driver") {
+      console.log("User is driver, navigating to /driver");
       navigate("/driver");
-      console.log("User is driver, dashboard available at /driver, Navigating to /driver");
-
+    } else if (decoded.role === "support") {
+      navigate("/support");
+    } else if (decoded.role === "finance") {
+      navigate("/finance");
     } else {
       alert("Login failed: role missing in token");
     }
@@ -78,8 +85,11 @@ const handleLogin = async () => {
 
   // ✅ Register handler
   const handleRegister = async () => {
+      const API_URL = process.env.REACT_APP_API_URL || "https://biasedly-abjective-brenden.ngrok-free.dev";
+
     try {
-      await axios.post("http://localhost:3001/register", {
+      await axios.post(`${API_URL}/register`, 
+        {
         username,
         password,
         role,
@@ -104,11 +114,22 @@ const handleLogin = async () => {
         height="100vh">
 
           {/*FLEET MANAGEMENT TEXT */}
+
+          <Typography 
+              variant="h4" 
+             // mb={2} 
+              color="#e0e0e0"
+              sx={{ mb: 2 }} // Adjust text height, move it further up
+              
+        >
+              Songa
+        </Typography>
+
         <Typography 
               variant="h4" 
-              mb={2} 
+              mb={1} 
               color="#e0e0e0"
-              sx={{ lineHeight: 4 }} // Adjust text height, move it further up
+              sx={{ lineHeight: 2 }} // Adjust text height, move it further up
               
         >
                Fleet Management {isRegister ? "Register" : "Login"}
