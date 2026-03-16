@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useTheme, Button  } from "@mui/material";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import LineChart from "../../components/LineChart";
@@ -9,19 +9,23 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const DriverDashboard = ({ driverId }) => {
+  const DriverDashboard = ({ driverId }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const username = localStorage.getItem("username") || "Driver";
 
   const [driverData, setDriverData] = useState([]);
 
   // ✅ Fetch only this driver’s data
   useEffect(() => {
+    const API_URL = process.env.REACT_APP_API_URL || "https://biasedly-abjective-brenden.ngrok-free.dev"; 
+
     const fetchDriverData = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:3001/driver-dashboard/${driverId}`
-        );
+        
+    const res = await axios.get(`${API_URL}/driver-dashboard/${driverId}`);
+    setDriverData(res.data || []);
+
         setDriverData(res.data || []);
       } catch (err) {
         console.error("Failed to fetch driver data:", err);
@@ -80,7 +84,7 @@ const DriverDashboard = ({ driverId }) => {
     <Box m="20px">
       <Header
         title="Driver Dashboard"
-        subtitle={`Welcome, ${driverId}`}
+        subtitle={`Welcome, ${username}`}
       />
 
       {/* Stat Boxes */}
@@ -147,6 +151,22 @@ const DriverDashboard = ({ driverId }) => {
         <Box height="250px">
           <PieChart isDashboard={true} data={pieData} />
         </Box>
+      </Box>
+          {/* ✅ PDF Download Button */}
+      <Box mt="20px">
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => {
+            const API_URL =
+              process.env.REACT_APP_API_URL ||
+              "https://biasedly-abjective-brenden.ngrok-free.dev";
+            // ✅ Opens PDF in new tab for download
+            window.open(`${API_URL}/driver-statement/${driverId}`, "_blank");
+          }}
+        >
+          Download PDF Statement
+        </Button>
       </Box>
     </Box>
   );
