@@ -7,16 +7,28 @@ const ProtectedRoute = ({ children, role }) => {
   try {
     const payload = JSON.parse(atob(token.split(".")[1]));
     console.log("ProtectedRoute payload:", payload, "expected role:", role);
-    console.log("ProtectedRoute check:", { payload, expectedRole: role });
 
+    // ✅ Expired token check
     if (payload.exp && Date.now() >= payload.exp * 1000) {
       localStorage.removeItem("token");
       return <Navigate to="/" replace state={{ sessionExpired: true }} />;
     }
 
-    // ✅ Normalize role check to lowercase
+    // ✅ Role check
     if (role && payload.role.toLowerCase() !== role.toLowerCase()) {
-      return <Navigate to="/" replace />;
+      // Redirect to their own dashboard instead of just "/"
+      switch (payload.role.toLowerCase()) {
+        case "admin":
+          return <Navigate to="/admin" replace />;
+        case "driver":
+          return <Navigate to="/driver" replace />;
+        case "support":
+          return <Navigate to="/support" replace />;
+        case "finance":
+          return <Navigate to="/finance" replace />;
+        default:
+          return <Navigate to="/" replace />;
+      }
     }
 
     return children;
